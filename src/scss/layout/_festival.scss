@@ -5,6 +5,7 @@
     padding: 5rem 0;
 
     @include m.tablet {
+        display: grid;
         @include m.grid(2, 5rem);
     }
 }

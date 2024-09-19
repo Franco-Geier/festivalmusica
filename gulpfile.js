@@ -1,4 +1,4 @@
-const { src, dest, watch, parallel } = require('gulp');
+const { src, dest, watch, parallel, series } = require('gulp');
 
 // CSS
 const sass = require('gulp-sass')(require('sass'));
@@ -38,6 +38,7 @@ async function versionWebp(done) {
     done();
 }
 
+
 function versionAvif(done) {
     const opciones = {
         quality: 50
@@ -49,7 +50,7 @@ function versionAvif(done) {
 }
 
 
-function css( done ) {
+function css(done) {
     src("src/scss/**/*.scss")  // Identificar el archivo SASS
         .pipe(plumber())  // Prevenir que se detenga en caso de error
         .pipe(sass())  // Compilar SASS a CSS
@@ -58,14 +59,29 @@ function css( done ) {
 }
 
 
-function dev( done ) {
-    watch('src/scss/**/*.scss', css);
+function javascript(done) {
+    src('src/js/**/*.js')
+        .pipe(dest('build/js'));
     done();
 }
 
 
+function dev(done) {
+    watch('src/scss/**/*.scss', css);
+    watch('src/js/**/*.js', javascript);
+    done();
+}
+
+
+// Convertir imagenes solo cuando se necesite
+const processImages = parallel(imagenes, versionWebp, versionAvif);
+
+
+// Exportar tareas
 exports.css = css;
+exports.js = javascript;
 exports.imagenes = imagenes;
 exports.versionWebp = versionWebp;
 exports.versionAvif = versionAvif;
-exports.dev = parallel(imagenes, versionWebp, versionAvif, dev);
+exports.processImages = processImages;
+exports.dev = series(css, javascript, dev);  // Tarea para vigilar cambios en CSS y JS

@@ -26,10 +26,11 @@
     }
 }
 
-@mixin grid($columnas, $espaciado) {
-    display: grid;
+@mixin grid($columnas, $espaciado: null) {
     grid-template-columns: repeat($columnas, 1fr);
-    gap: $espaciado;
+    @if $espaciado != null {
+        gap: $espaciado;
+    }
 }
 
 @mixin resetear-lista {

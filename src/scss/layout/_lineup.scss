@@ -17,6 +17,7 @@
 
 .escenarios-contenedor {
     @include m.tablet {
+        display: grid;
         @include m.grid(2, 5rem);
     }
     p {
