@@ -3,9 +3,16 @@ const { src, dest, watch, parallel, series } = require('gulp');
 // CSS
 const sass = require('gulp-sass')(require('sass'));
 const plumber = require('gulp-plumber');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
+const postcss = require('gulp-postcss');
+const sourcemaps = require("gulp-sourcemaps");
 
 // Imagenes
 const avif = require('gulp-avif');
+
+// Javascript
+const terser = require('gulp-terser-js');
 
 // Usar import dinámico para gulp-imagemin y sus plugins integrados
 async function imagenes(done) {
@@ -52,8 +59,11 @@ function versionAvif(done) {
 
 function css(done) {
     src("src/scss/**/*.scss")  // Identificar el archivo SASS
+        .pipe(sourcemaps.init())
         .pipe(plumber())  // Prevenir que se detenga en caso de error
         .pipe(sass())  // Compilar SASS a CSS
+        .pipe(postcss([autoprefixer(), cssnano()]))
+        .pipe(sourcemaps.write("."))
         .pipe(dest("build/css"));  // Almacenar en la carpeta build
     done();
 }
@@ -61,6 +71,9 @@ function css(done) {
 
 function javascript(done) {
     src('src/js/**/*.js')
+        .pipe(sourcemaps.init())
+        .pipe(terser())
+        .pipe(sourcemaps.write("."))
         .pipe(dest('build/js'));
     done();
 }

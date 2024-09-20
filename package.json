@@ -21,12 +21,18 @@
   },
   "homepage": "https://github.com/Franco-Geier/festivalmusica#readme",
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
     "gulp": "^4.0.2",
     "gulp-avif": "^1.1.1",
     "gulp-imagemin": "^9.1.0",
     "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^10.0.0",
     "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-terser-js": "^5.2.2",
     "gulp-webp": "^5.0.0",
+    "postcss": "^8.4.47",
     "sass": "^1.78.0"
   }
 }
